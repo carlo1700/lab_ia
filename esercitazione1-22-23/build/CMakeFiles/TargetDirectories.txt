@@ -1,4 +1,4 @@
-/home/student/Desktop/lab_ai/esercitazione1-22-23/build/CMakeFiles/uwimg++.dir
-/home/student/Desktop/lab_ai/esercitazione1-22-23/build/CMakeFiles/test0.dir
-/home/student/Desktop/lab_ai/esercitazione1-22-23/build/CMakeFiles/edit_cache.dir
-/home/student/Desktop/lab_ai/esercitazione1-22-23/build/CMakeFiles/rebuild_cache.dir
+/home/student/Desktop/lab_ia/esercitazione1-22-23/build/CMakeFiles/uwimg++.dir
+/home/student/Desktop/lab_ia/esercitazione1-22-23/build/CMakeFiles/test0.dir
+/home/student/Desktop/lab_ia/esercitazione1-22-23/build/CMakeFiles/edit_cache.dir
+/home/student/Desktop/lab_ia/esercitazione1-22-23/build/CMakeFiles/rebuild_cache.dir

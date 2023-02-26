@@ -14,12 +14,21 @@ Image rgb_to_grayscale(const Image& im)
   {
   assert(im.c == 3); // only accept RGB images
   Image gray(im.w,im.h,1); // create a new grayscale image (note: 1 channel)
-  
+
   // TODO: calculate the pixels of 'gray'
-  
-  
-  NOT_IMPLEMENTED();
-  
+  int i = 0;
+  float y = 0;
+  while( i < (im.h * im.w) )
+  {
+    y = im.data[i] * 0.299;
+    y += im.data[i + (im.h * im.w)] * 0.587;
+    y += im.data[i + (im.h * im.w * 2)] * 0.114;
+    gray.data[i] = y;
+    i++;
+
+  }
+  //NOT_IMPLEMENTED();
+
   return gray;
   }
 
@@ -30,14 +39,14 @@ Image grayscale_to_rgb(const Image& im, float r, float g, float b)
   {
   assert(im.c == 1);
   Image rgb(im.w,im.h,3);
-  
+
   for(int q2=0;q2<im.h;q2++)for(int q1=0;q1<im.w;q1++)
     {
     rgb(q1,q2,0)=r*im(q1,q2);
     rgb(q1,q2,1)=g*im(q1,q2);
     rgb(q1,q2,2)=b*im(q1,q2);
     }
-  
+
   return rgb;
   }
 
@@ -51,11 +60,20 @@ Image grayscale_to_rgb(const Image& im, float r, float g, float b)
 void shift_image(Image& im, int c, float v)
   {
   assert(c>=0 && c<im.c); // needs to be a valid channel
-  
+
   // TODO: shift all the pixels at the specified channel
-  
-  NOT_IMPLEMENTED();
-  
+  int i = 0;
+  while(i < im.w * im.h * (c + 1))
+  {
+    if( i >= im.w * im.h * c )
+    {
+      im.data[i] +=v;
+    }
+    i++;
+  }
+
+  //NOT_IMPLEMENTED();
+
   }
 
 // HW0 #8
@@ -65,11 +83,19 @@ void shift_image(Image& im, int c, float v)
 void scale_image(Image& im, int c, float v)
   {
   assert(c>=0 && c<im.c); // needs to be a valid channel
-  
+
   // TODO: scale all the pixels at the specified channel
-  
-  NOT_IMPLEMENTED();
-  
+  int i = 0;
+  while(i < im.w * im.h * (c + 1))
+  {
+    if( i >= im.w * im.h * c )
+    {
+      im.data[i] *=v;
+    }
+    i++;
+  }
+  //NOT_IMPLEMENTED();
+
   }
 
 
@@ -78,9 +104,22 @@ void scale_image(Image& im, int c, float v)
 void clamp_image(Image& im)
   {
   // TODO: clamp all the pixels in all channel to be between 0 and 1
-  
-  NOT_IMPLEMENTED();
-  
+  if(im.h < 0)
+    im.h = 0;
+  else if(im.h > 1)
+    im.h = 1;
+  if(im.w < 0)
+    im.w = 0;
+  else if(im.h > 1)
+    im.h = 1;
+  if(im.c < 0)
+    im.c = 0;
+  else if(im.c > 1)
+    im.c = 1;
+
+
+  //NOT_IMPLEMENTED();
+
   }
 
 // These might be handy
@@ -100,11 +139,57 @@ float min(float a, float b, float c)
 void rgb_to_hsv(Image& im)
   {
   assert(im.c==3 && "only works for 3-channels images");
-  
+
   // TODO: Convert all pixels from RGB format to HSV format
-  
-  NOT_IMPLEMENTED();
-  
+
+  float V;
+  float m, C, S;
+  float R, G, B;
+  float H1, H;
+
+  int i = 0;
+
+  while(i < im.w * im.h)
+  {
+    R = im.data[i];
+    G = im.data[i + (im.w * im.h)];
+    B = im.data[i + (im.w * im.h * 2)];
+
+    V = max(R , G , B);
+    m = min(R,G,B);
+    C = V - m;
+
+    if( V == 0)
+      S = 0;
+    else
+      S = C / V;
+    if (C == 0)
+      H = 0;
+    else{
+      if (V == R)
+        H1 = (G - B)/C;
+      else if( V == G)
+        H1 = ((B - R)/C) + 2;
+      else if( V == B )
+        H1 = ((R-G)/C) + 4;
+      if ( H1 < 0)
+        H = (H1/6) + 1;
+      else
+        H = H1/6;
+    }
+    if (H < 0)
+      H +=1;
+    else if( H >= 1)
+      H -= 1;
+    im.data[i] = H;
+    im.data[i + (im.h * im.w)] = S;
+    im.data[i + (im.h * im.w * 2)] = V;
+    i++;
+
+  }
+
+  //NOT_IMPLEMENTED();
+
   }
 
 // HW0 #7
@@ -112,11 +197,75 @@ void rgb_to_hsv(Image& im)
 void hsv_to_rgb(Image& im)
   {
   assert(im.c==3 && "only works for 3-channels images");
-  
+
   // TODO: Convert all pixels from HSV format to RGB format
-  
-  NOT_IMPLEMENTED();
-  
+
+  float V, m, C, S;
+  float R, G, B;
+  float R1, G1, B1;
+  float H1, H;
+  float X;
+
+  int i = 0;
+
+  while( i < im.h * im.w )
+  {
+    H = im.data[i];
+    S = im.data[i + (im.w * im.h)];
+    V = im.data[i + (im.w * im.h * 2)];
+
+    C = V * S;
+    X = C * (1 - abs(fmod(6 * H, 2) - 1));
+    m = V - C;
+    if(H >= 0 && H < (1.0 / 6.0))
+    {
+      R1 = C;
+      G1 = X;
+      B1 = 0;
+    }
+    else if( H >= (1.0/6.0) && H < (2.0/6.0))
+    {
+      R1 = X;
+      G1 = C;
+      B1 = 0;
+    }
+    else if( H >= (2.0 / 6.0) && H < 0.5 )
+    {
+      R1 = 0;
+      G1 = C;
+      B1 = X;
+    }
+    else if( H >= (3.0 / 6.0) && H < (4.0 / 6.0) )
+    {
+      R1 = 0;
+      G1 = X;
+      B1 = C;
+    }
+    else if ( H >= (4.0 / 6.0) && H < (5.0 / 6.0))
+    {
+      R1 = X;
+      G1 = 0;
+      B1 = C;
+    }
+    else if ( H>= (5.0/6.0) && H < 1 )
+    {
+      R1 = C;
+      G1 = 0;
+      B1 = X;
+    }
+    R = R1 + m;
+    G = G1 + m;
+    B = B1 + m;
+
+    im.data[i] = R;
+    im.data[i + (im.w * im.h)] = G;
+    im.data[i + (im.w * im.h * 2)] = B;
+
+    i++;
+  }
+
+  //NOT_IMPLEMENTED();
+
   }
 
 // HW0 #9
@@ -124,12 +273,12 @@ void hsv_to_rgb(Image& im)
 void rgb_to_lch(Image& im)
   {
   assert(im.c==3 && "only works for 3-channels images");
-  
+
   // TODO: Convert all pixels from RGB format to LCH format
-  
-  
+
+
   NOT_IMPLEMENTED();
-  
+
   }
 
 // HW0 #9
@@ -137,11 +286,11 @@ void rgb_to_lch(Image& im)
 void lch_to_rgb(Image& im)
   {
   assert(im.c==3 && "only works for 3-channels images");
-  
+
   // TODO: Convert all pixels from LCH format to RGB format
-  
+
   NOT_IMPLEMENTED();
-  
+
   }
 
 

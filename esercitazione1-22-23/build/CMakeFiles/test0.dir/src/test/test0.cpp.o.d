@@ -1,7 +1,7 @@
 CMakeFiles/test0.dir/src/test/test0.cpp.o: \
- /home/student/Desktop/lab_ai/esercitazione1-22-23/src/test/test0.cpp \
+ /home/student/Desktop/lab_ia/esercitazione1-22-23/src/test/test0.cpp \
  /usr/include/stdc-predef.h \
- /home/student/Desktop/lab_ai/esercitazione1-22-23/src/test/../image.h \
+ /home/student/Desktop/lab_ia/esercitazione1-22-23/src/test/../image.h \
  /usr/include/c++/11/cassert \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -157,7 +157,7 @@ CMakeFiles/test0.dir/src/test/test0.cpp.o: \
  /usr/include/c++/11/exception /usr/include/c++/11/bits/exception_ptr.h \
  /usr/include/c++/11/bits/cxxabi_init_exception.h \
  /usr/include/c++/11/typeinfo /usr/include/c++/11/bits/nested_exception.h \
- /home/student/Desktop/lab_ai/esercitazione1-22-23/src/test/../utils.h \
+ /home/student/Desktop/lab_ia/esercitazione1-22-23/src/test/../utils.h \
  /usr/include/c++/11/chrono /usr/include/c++/11/ratio \
  /usr/include/c++/11/limits /usr/include/c++/11/ctime \
  /usr/include/c++/11/bits/parse_numbers.h /usr/include/c++/11/thread \

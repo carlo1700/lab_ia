@@ -30,15 +30,15 @@ float get_clamped_pixel(const Image& im, int x, int y, int ch)
   if( x < 0 )
     x = 0;
   else if ( x >= im.w)
-    x = im.w;
+    x = im.w - 1;
   if( y < 0)
     y = 0;
   else if( y >= im.h)
-    y = im.h;
+    y = im.h - 1;
   if ( ch < 0)
     ch = 0;
-  else if( ch >= 2)
-    ch = 2;
+  else if( ch >= im.c)
+    ch = im.c - 1;
 
   return im.data[pixel_address(im, x, y, ch)];
 
@@ -76,6 +76,8 @@ void copy_image(Image& to, const Image& from)
   // allocating data for the new image
   to.data=(float*)calloc(from.w*from.h*from.c,sizeof(float));
   to.c=from.c;
+  to.w = from.w;
+  to.h = from.h;
 
   // TODO: populate the remaining fields in 'to' and copy the data
   for (int i = 0; i < to.w; i++)
@@ -89,6 +91,7 @@ void copy_image(Image& to, const Image& from)
   for (int i = 0; i < to.w; i++)
     for (int j = 0; j < to.h; j++)
         to.data[pixel_address(to, i, j, 2)] = from.data[pixel_address(to, i, j, 2)];
+
 
   // You might want to check how 'memcpy' function works
 

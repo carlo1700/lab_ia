@@ -1,5 +1,5 @@
 CMakeFiles/uwimg++.dir/src/utils.cpp.o: \
- /home/student/Desktop/lab_ai/esercitazione1-22-23/src/utils.cpp \
+ /home/student/Desktop/lab_ia/esercitazione1-22-23/src/utils.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/11/cstdio \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -64,7 +64,7 @@ CMakeFiles/uwimg++.dir/src/utils.cpp.o: \
  /usr/include/string.h /usr/include/strings.h \
  /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
- /home/student/Desktop/lab_ai/esercitazione1-22-23/src/utils.h \
+ /home/student/Desktop/lab_ia/esercitazione1-22-23/src/utils.h \
  /usr/include/c++/11/vector /usr/include/c++/11/bits/stl_algobase.h \
  /usr/include/c++/11/bits/functexcept.h \
  /usr/include/c++/11/bits/exception_defines.h \
@@ -154,7 +154,7 @@ CMakeFiles/uwimg++.dir/src/utils.cpp.o: \
  /usr/include/x86_64-linux-gnu/c++/11/bits/error_constants.h \
  /usr/include/c++/11/stdexcept /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
- /home/student/Desktop/lab_ai/esercitazione1-22-23/src/image.h \
+ /home/student/Desktop/lab_ia/esercitazione1-22-23/src/image.h \
  /usr/include/c++/11/cassert /usr/include/assert.h \
  /usr/include/c++/11/cmath /usr/include/math.h \
  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
