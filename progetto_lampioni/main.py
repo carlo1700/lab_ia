@@ -1,62 +1,56 @@
 import cv2
 import numpy as np
 
+# Funzione per l'individuazione degli illuminanti
+def individua_illuminanti_immagine(image):
+    # Converte l'immagine in scala di grigi
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    cv2.imshow('gray', gray)
+
+
+    # Applica una soglia per estrarre i punti di luce
+    _, threshold = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
+    cv2.imshow('threshold', threshold)
+
+    # Applica un filtro per rimuovere il rumore di fondo
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    opening = cv2.morphologyEx(threshold, cv2.MORPH_OPEN, kernel)
+    cv2.imshow('opening', opening)
+
+    # Trova le componenti connesse
+    contours, _ = cv2.findContours(opening, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    illuminanti = []
+
+    # Filtra le regioni connesse per mantenere solo gli illuminanti desiderati
+    for contour in contours:
+        # Calcola l'area del contorno
+        area = cv2.contourArea(contour)
+
+        # Filtra i falsi positivi in base all'area
+        if area > 10 and area < 5000:
+            # Calcola il centroide del contorno
+            moments = cv2.moments(contour)
+            centroid_x = int(moments['m10'] / moments['m00'])
+            centroid_y = int(moments['m01'] / moments['m00'])
+
+            # Aggiungi il centroide agli illuminanti individuati
+            illuminanti.append((centroid_x, centroid_y))
+
+    return illuminanti
 
 # Carica l'immagine
-img = cv2.imread("C:\\Users\\Administrator\\Pictures\\lab_ia\\progetto_lampioni\\data\\immagine_lab_ia (1).jpg")
-if img is None:
-    print("Immagine non caricata")
-    exit()
+# image = cv2.imread('lab_img.jpg')
+image = cv2.imread('C:\\Users\\Administrator\\Pictures\\lab_ia\\progetto_lampioni\\data\\immagine_lab_ia (1).jpg')
 
-# Ottieni le dimensioni dell'immagine
-imgWidth = img.shape[1]
-imgHeight = img.shape[0]
+# Individua gli illuminanti nell'immagine
+illuminanti = individua_illuminanti_immagine(image)
 
-# Imposta le dimensioni desiderate per la visualizzazione
-displayWidth = 800
-displayHeight = 600
+# Disegna i centroidi degli illuminanti sull'immagine originale
+for illuminante in illuminanti:
+    cv2.circle(image, illuminante, 5, (0, 255, 0), -1)
 
-# Calcola i fattori di ridimensionamento per adattare l'immagine alla finestra di visualizzazione
-widthRatio = displayWidth / imgWidth
-heightRatio = displayHeight / imgHeight
-scaleFactor = min(widthRatio, heightRatio)
-
-# Ridimensiona l'immagine mantenendo l'aspetto ratio
-img = cv2.resize(img, None, fx=scaleFactor, fy=scaleFactor)
-
-# Converti l'immagine in scala di grigi
-imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-pippo = np.copy(imgGray)
-#crea un keypoint detector
-detector = cv2.SimpleBlobDetector_create()
-#trova i keypoint
-keypoints = detector.detect(pippo)
-#disegna i keypoint sull'immagine
-pippo = cv2.drawKeypoints(pippo, keypoints, pippo)
-
-cv2.imshow("Immagine in Scala di Grigi", pippo)
-
-# Crea un'istanza dell'oggetto SIFT
-sift = cv2.SIFT_create()
-
-# Trova i punti chiave e i descrittori dell'immagine
-keypoints, descriptors = sift.detectAndCompute(imgGray, None)
-
-# Disegna i punti chiave sull'immagine originale
-imgKeypoints = np.copy(img)
-cv2.drawKeypoints(img, keypoints, imgKeypoints)
-
-# Visualizza l'immagine con i punti chiave evidenziati
-cv2.imshow("Individuazione Luci", imgKeypoints)
+# Visualizza l'immagine con gli illuminanti individuati
+cv2.imshow('Illuminanti individuati', image)
 cv2.waitKey(0)
-
-# Trova i lampioni
-lampioni = [kp for kp in keypoints if kp.size > 10]
-
-# Disegna i lampioni sull'immagine originale
-imgLampioni = np.copy(img)
-cv2.drawKeypoints(img, lampioni, imgLampioni)
-
-# Visualizza l'immagine con i lampioni evidenziati
-cv2.imshow("Individuazione Lampioni", imgLampioni)
-cv2.waitKey(0)
+cv2.destroyAllWindows()
