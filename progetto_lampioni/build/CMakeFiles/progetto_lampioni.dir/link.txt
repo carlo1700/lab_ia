@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\progetto_lampioni.dir/objects.a
-C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\progetto_lampioni.dir/objects.a @CMakeFiles\progetto_lampioni.dir\objects1.rsp
-C:\msys64\mingw64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\progetto_lampioni.dir/objects.a -Wl,--no-whole-archive -o progetto_lampioni.exe -Wl,--out-implib,libprogetto_lampioni.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\progetto_lampioni.dir\linkLibs.rsp

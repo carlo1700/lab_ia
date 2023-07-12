@@ -1,8 +1,0 @@
-[
-{
-  "directory": "C:/Users/Administrator/Pictures/lab_ia/progetto_lampioni/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/progetto_lampioni.dir/includes_CXX.rsp -g -o CMakeFiles\\progetto_lampioni.dir\\main.cpp.obj -c C:\\Users\\Administrator\\Pictures\\lab_ia\\progetto_lampioni\\main.cpp",
-  "file": "C:/Users/Administrator/Pictures/lab_ia/progetto_lampioni/main.cpp",
-  "output": "CMakeFiles/progetto_lampioni.dir/main.cpp.obj"
-}
-]
