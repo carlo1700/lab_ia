@@ -1,0 +1,31 @@
+# Analizza il tuo dataset e osserva le distanze
+# Calcola la distanza tra le coordinate degli illuminanti etichettati e le predizioni del tuo algoritmo
+
+# Osserva la distribuzione delle distanze
+# Traccia un istogramma delle distanze per valutare la loro distribuzione
+
+# Esamina i risultati e considera il trade-off tra precisione e richiamo
+
+# Modifica la soglia di distanza in base alle tue osservazioni e alle tue esigenze
+# Puoi regolare il valore della soglia verso l'alto o verso il basso per ottenere il trade-off desiderato
+
+# Esempi di possibili inizializzazioni della soglia di distanza
+# - Imposta la soglia di distanza come la media delle distanze calcolate
+# soglia_distanza = np.mean(distanze)
+
+# - Imposta la soglia di distanza come un valore che copre la maggior parte delle distanze
+# soglia_distanza = np.percentile(distanze, 90)
+
+# - Imposta la soglia di distanza manualmente in base alle tue esigenze e alla distribuzione delle distanze
+# soglia_distanza = 15.0
+
+# Utilizza la soglia di distanza nel confronto delle coordinate degli illuminanti con le etichette corrette
+# Puoi confrontare la distanza tra le coordinate degli illuminanti e le etichette per determinare la corrispondenza
+
+# Continua con il calcolo delle metriche di valutazione come precisione, richiamo e F1-score
+# Utilizza le metriche per valutare le prestazioni del tuo algoritmo di individuazione degli illuminanti
+
+# Sperimenta con diversi valori di soglia_distanza e valuta l'effetto sulle metriche di valutazione
+# Trova il valore di soglia_distanza che offre un buon equilibrio tra precisione e richiamo per il tuo problema
+
+# Ripeti il processo di analisi e ottimizzazione della soglia di distanza se necessario
