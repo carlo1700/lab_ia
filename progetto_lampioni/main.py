@@ -91,7 +91,9 @@ for i, (x_predetto, y_predetto) in enumerate(illuminanti):
             predizioni[i] = True
             break
 
+print(etichette)
 print("le etichette sono: ", len(etichette))
+print(predizioni)
 print("le predizioni sono: ", len(predizioni))
 
 # ...
@@ -112,4 +114,3 @@ else:
     # Calcola l'F1-score
     f1 = f1_score(etichette, predizioni)
     print("F1-score:", f1)
-
