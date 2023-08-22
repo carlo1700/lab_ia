@@ -5,12 +5,18 @@ from sklearn.metrics import f1_score, precision_score, recall_score
 
 def individua_lampioni_colore(img):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    #riscala l'immagine hsv se troppo grande
+    if hsv.shape[0] > 1000 or hsv.shape[1] > 1000:
+        hsv = cv2.resize(hsv, (int(hsv.shape[1]/2), int(hsv.shape[0]/2)))
     cv2.imshow('hsv', hsv)
     lower_color = np.array([0, 0, 200])
     upper_color = np.array([200, 80, 255])
     mask = cv2.inRange(hsv, lower_color, upper_color)
+    #riscala l'immagine mask se troppo grande
+    if mask.shape[0] > 1000 or mask.shape[1] > 1000:
+        mask = cv2.resize(mask, (int(mask.shape[1]/2), int(mask.shape[0]/2)))
     cv2.imshow('mask', mask)
-    kernel = np.ones((11, 11), np.uint8)
+    kernel = np.ones((12, 12), np.uint8)
     opening = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
     return opening
 
@@ -57,19 +63,23 @@ def foo(file):
 
 
 # Esempio di utilizzo
-image = cv2.imread('data\\immagine_lab_ia (1).jpg')
+image = cv2.imread('roboflow\\test\\images\\immagine_lab_ia-1-_jpg.rf.bbe7082e00bc3ec42ff243f08fd0349b.jpg')
 # stampa dimensioni immagine
 print(image.shape)
 
 # image = cv2.imread('data/lab2.jpg')
 result = individua_lampioni_colore(image)
+#riscala l'immagine se troppo grande
+if image.shape[0] > 1000 or image.shape[1] > 1000:
+    image = cv2.resize(image, (int(image.shape[1]/2), int(image.shape[0]/2)))
+    result = cv2.resize(result, (int(result.shape[1]/2), int(result.shape[0]/2)))
 result, bounding = cerchia(result)
 cv2.imshow('Risultato', result)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 print(bounding)
-pprint(caricafile('roboflow\\test\\labels\\immagine_lab_ia-1-_jpg.rf.bbe7082e00bc3ec42ff243f08fd0349b.txt'))
+pprint(caricafile('roboflow\\test\\\labels\immagine_lab_ia-1-_jpg.rf.bbe7082e00bc3ec42ff243f08fd0349b.txt'))
 
 
 y_true = foo('roboflow\\test\\labels\\immagine_lab_ia-1-_jpg.rf.bbe7082e00bc3ec42ff243f08fd0349b.txt')
