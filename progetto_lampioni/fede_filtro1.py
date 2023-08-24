@@ -4,22 +4,37 @@ import numpy as np
 from sklearn.metrics import f1_score, precision_score, recall_score
 
 def individua_lampioni_colore(img):
+
+    # converte l'immagine in hsv
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
     #riscala l'immagine hsv se troppo grande
     if hsv.shape[0] > 1000 or hsv.shape[1] > 1000:
         hsv = cv2.resize(hsv, (int(hsv.shape[1]/2), int(hsv.shape[0]/2)))
     cv2.imshow('hsv', hsv)
+
+    #definizione del range di colori da individuare
     lower_color = np.array([0, 0, 200])
     upper_color = np.array([200, 80, 255])
     mask = cv2.inRange(hsv, lower_color, upper_color)
+
     #riscala l'immagine mask se troppo grande
     if mask.shape[0] > 1000 or mask.shape[1] > 1000:
         mask = cv2.resize(mask, (int(mask.shape[1]/2), int(mask.shape[0]/2)))
     cv2.imshow('mask', mask)
-    #operazione di apertura per ridurre il rumore
-    kernel = np.ones((11, 11), np.uint8)
-    opening = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
-    return opening
+
+    #operazione di erosione per ridurre il rumore
+    kernel_erosion = np.ones((4, 4), np.uint8)
+    eroded_mask = cv2.erode(mask, kernel_erosion, iterations=1)
+    cv2.imshow('eroded_mask', eroded_mask)
+
+    #operazione di dilatazione per ridurre il rumore
+    kernel_dilation = np.ones((15, 15), np.uint8)
+    dilated_mask = cv2.dilate(eroded_mask, kernel_dilation, iterations=1)
+    cv2.imshow('dilated_mask', dilated_mask)
+
+
+    return dilated_mask
 
 
 bounding_boxes = []
@@ -92,11 +107,11 @@ def foo(file):
 
 
 # Esempio di utilizzo
-image = cv2.imread('roboflow\\test\\images\\immagine_lab_ia-1-_jpg.rf.bbe7082e00bc3ec42ff243f08fd0349b.jpg')
+image = cv2.imread('roboflow\\test\\images\\immagine_lab_ia-11-_jpg.rf.1a5dea0c66e06da0b092d79309fbdb10.jpg')
 # stampa dimensioni immagine
 print(image.shape)
 
-# image = cv2.imread('data/lab2.jpg')
+
 result = individua_lampioni_colore(image)
 #riscala l'immagine se troppo grande
 if image.shape[0] > 1000 or image.shape[1] > 1000:
@@ -107,7 +122,7 @@ cv2.imshow('Risultato', result)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-f = 'roboflow\\test\\labels\\immagine_lab_ia-1-_jpg.rf.bbe7082e00bc3ec42ff243f08fd0349b.txt'
+f = 'roboflow\\test\\labels\\immagine_lab_ia-11-_jpg.rf.1a5dea0c66e06da0b092d79309fbdb10.txt'
 
 print(bounding)
 pprint(caricafile(f))
