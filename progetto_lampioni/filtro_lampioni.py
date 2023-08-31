@@ -1,9 +1,9 @@
+import cv2, os
 from pprint import pprint
-import cv2
 import numpy as np
 from sklearn.metrics import f1_score, precision_score, recall_score
 
-def individua_lampioni_colore(img):
+def individua_lampioni_colore(image):
 
     # Riduci il rumore dell'immagine con un filtro Gaussiano
     blurred = cv2.GaussianBlur(image, (1, 1), 0)
@@ -53,10 +53,7 @@ def individua_lampioni_colore(img):
 
     return res
 
-
-# bounding_boxes = []
-
-def cerchia(res):
+def cerchia(res, image):
     bounding_boxes = []
 
     contours, _ = cv2.findContours(res, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -93,20 +90,21 @@ def euclidean_distance(tuple1, tuple2):
 
 def find_similar_tuples(array1, array2):
     result = []
+    found = 0
     for tuple1 in array1:
         found_similar = False
         for tuple2 in array2:
-            distance = euclidean_distance(tuple1, tuple2)
-            if distance <= tuple1[3] or distance <= tuple1[4] or distance >= tuple1[3] or distance >= tuple1[4]:
+            distance = euclidean_distance(tuple1[1:3], tuple2[1:3])
+            if distance <= tuple1[3] or distance <= tuple1[4]:
                 found_similar = True
-                array2.remove(tuple2)
+                found += 1
                 break
         if found_similar:
             result.append(1)
         else:
             result.append(0)
-    if(len(array2) > 0):
-        result.extend([1] * len(array2))
+    if found < len(array2):
+        result.extend([1] * (len(array2) - found))
     return result
 
 
@@ -124,10 +122,83 @@ def foo(file, bounding_boxes):
     return res
 
 
+def media():
+    # Definisci le cartelle contenenti le immagini e i file di testo
+    cartella_immagini = 'roboflow\\test\\images'
+    cartella_label = 'roboflow\\test\\labels'
+
+    # Inizializza le liste per accumulare le metriche
+    precision_scores = []
+    recall_scores = []
+    f1_scores = []
+
+    # Cicla attraverso ogni immagine nella cartella delle immagini
+    for nome_immagine in os.listdir(cartella_immagini):
+        percorso_immagine = os.path.join(cartella_immagini, nome_immagine)
+
+        print("percorso immagine: ", percorso_immagine)
+
+        nome_base = os.path.splitext(nome_immagine)[0]
+        percorso_label = os.path.join(cartella_label, nome_base + '.txt')
+        print("percorso label: ", percorso_label)
+
+        if os.path.isfile(percorso_label):
+
+            # Leggi l'immagine e il bounding box
+            image = cv2.imread(percorso_immagine)
+            # Esegui il processo di individuazione e valutazione
+            result = individua_lampioni_colore(image)
+            result, bounding = cerchia(result, image)
+
+            # Calcola le metriche
+            y_pred = foo(percorso_label, bounding)
+            y_true = [1 for _ in range(len(caricafile(percorso_label)))]
+
+            max_length = max(len(y_true), len(y_pred))
+
+            if max_length == len(y_true):
+                y_pred += [0] * (max_length - len(y_pred))
+            else:
+                y_true += [0] * (max_length - len(y_true))
+
+            print("veri")
+            pprint(y_true)
+            print("predizione")
+            pprint(y_pred)
+
+            precision = precision_score(y_true, y_pred)
+            print("Precision:", precision)
+            recall = recall_score(y_true, y_pred)
+            print("recall:", recall)
+            f1 = f1_score(y_true, y_pred)
+            print("F1-score:", f1)
+            print()
+
+            # Aggiungi le metriche alle liste
+            precision_scores.append(precision)
+            recall_scores.append(recall)
+            f1_scores.append(f1)
+
+
+
+    # Calcola la media delle metriche solo se ci sono dati
+    if len(precision_scores) > 0:
+        media_precision = sum(precision_scores) / len(precision_scores)
+        media_recall = sum(recall_scores) / len(recall_scores)
+        media_f1 = sum(f1_scores) / len(f1_scores)
+
+        # Stampa i risultati
+        print("Media Precision:", media_precision)
+        print("Media Recall:", media_recall)
+        print("Media F1-score:", media_f1)
+    else:
+        print("Nessun dato disponibile per il calcolo delle metriche.")
+
+
 def main():
     # Esempio di utilizzo
-    i = 'roboflow\\test\\images\\immagine_lab_ia-4-_jpg.rf.12f7494acea45c4c63316de0ee0035b5.jpg'
-    f = 'roboflow\\test\\labels\\immagine_lab_ia-4-_jpg.rf.12f7494acea45c4c63316de0ee0035b5.txt'
+    i = 'roboflow\\test\\images\\immagine_lab_ia-22-_jpg.rf.04702e669a40daca074ae2de1227a8a3.jpg'
+    f = 'roboflow\\test\\labels\\immagine_lab_ia-22-_jpg.rf.04702e669a40daca074ae2de1227a8a3.txt'
     image = cv2.imread(i)
 
     result = individua_lampioni_colore(image)
@@ -135,7 +206,7 @@ def main():
     if image.shape[0] > 1000 or image.shape[1] > 1000:
         image = cv2.resize(image, (int(image.shape[1]/2), int(image.shape[0]/2)))
         result = cv2.resize(result, (int(result.shape[1]/2), int(result.shape[0]/2)))
-    result, bounding_boxes = cerchia(result)
+    result, bounding_boxes = cerchia(result, image)
     cv2.imshow('Risultato', result)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -170,3 +241,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    #media()
