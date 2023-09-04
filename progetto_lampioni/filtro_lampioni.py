@@ -240,5 +240,5 @@ def main():
     print("f1_score:", precision)
 
 if __name__ == "__main__":
-    #main()
-    media()
+    main()
+    #media()
