@@ -1,0 +1,4 @@
+/home/biar/Desktop/Lab AI/rp-esercitazione1/build/CMakeFiles/rebuild_cache.dir
+/home/biar/Desktop/Lab AI/rp-esercitazione1/build/CMakeFiles/edit_cache.dir
+/home/biar/Desktop/Lab AI/rp-esercitazione1/build/CMakeFiles/uwimg++.dir
+/home/biar/Desktop/Lab AI/rp-esercitazione1/build/CMakeFiles/test1.dir

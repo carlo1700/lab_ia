@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/biar/Desktop/Lab AI/rp-esercitazione1/src/image.h
+cassert
+-
+cstring
+-
+cmath
+-
+algorithm
+-
+string
+-
+vector
+-
+stdexcept
+-
+utils.h
+/home/biar/Desktop/Lab AI/rp-esercitazione1/src/utils.h
+
+/home/biar/Desktop/Lab AI/rp-esercitazione1/src/test/test1.cpp
+../image.h
+/home/biar/Desktop/Lab AI/rp-esercitazione1/src/image.h
+../utils.h
+/home/biar/Desktop/Lab AI/rp-esercitazione1/src/utils.h
+string
+-
+
+/home/biar/Desktop/Lab AI/rp-esercitazione1/src/utils.h
+vector
+-
+string
+-
+chrono
+-
+thread
+-
+mutex
+-
+
