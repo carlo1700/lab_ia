@@ -124,49 +124,47 @@ def foo(file, bounding_boxes):
     return res
 
 
-def main():
-    # Esempio di utilizzo
-    i = 'roboflow\\test\\images\\immagine_lab_ia-4-_jpg.rf.12f7494acea45c4c63316de0ee0035b5.jpg'
-    f = 'roboflow\\test\\labels\\immagine_lab_ia-4-_jpg.rf.12f7494acea45c4c63316de0ee0035b5.txt'
-    image = cv2.imread(i)
 
-    result = individua_lampioni_colore(image)
-    #riscala l'immagine se troppo grande
-    if image.shape[0] > 1000 or image.shape[1] > 1000:
-        image = cv2.resize(image, (int(image.shape[1]/2), int(image.shape[0]/2)))
-        result = cv2.resize(result, (int(result.shape[1]/2), int(result.shape[0]/2)))
-    result, bounding_boxes = cerchia(result)
-    cv2.imshow('Risultato', result)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+# Esempio di utilizzo
+i = 'roboflow\\test\\images\\immagine_lab_ia-1-_jpg.rf.bbe7082e00bc3ec42ff243f08fd0349b.jpg'
+f = 'roboflow\\test\\labels\\immagine_lab_ia-1-_jpg.rf.bbe7082e00bc3ec42ff243f08fd0349b.txt'
+image = cv2.imread(i)
 
-
-    print(bounding_boxes)
-    pprint(caricafile(f))
+result = individua_lampioni_colore(image)
+#riscala l'immagine se troppo grande
+if image.shape[0] > 1000 or image.shape[1] > 1000:
+    image = cv2.resize(image, (int(image.shape[1]/2), int(image.shape[0]/2)))
+    result = cv2.resize(result, (int(result.shape[1]/2), int(result.shape[0]/2)))
+result, bounding_boxes = cerchia(result)
+cv2.imshow('Risultato', result)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 
-    y_pred = foo(f, bounding_boxes)
-    y_true = [1 for _ in range(len(caricafile(f)))]
+print(bounding_boxes)
+pprint(caricafile(f))
 
 
-    max_length = max(len(y_true), len(y_pred))
+y_pred = foo(f, bounding_boxes)
+y_true = [1 for _ in range(len(caricafile(f)))]
 
-    if max_length == len(y_true):
-        y_pred += [0] * (max_length - len(y_pred))
-    else:
-        y_true += [0] * (max_length - len(y_true))
 
-    print("veri")
-    pprint(y_true)
-    print("predizione")
-    pprint(y_pred)
+max_length = max(len(y_true), len(y_pred))
 
-    precision = precision_score(y_true, y_pred)
-    print("Precision:", precision)
-    precision = recall_score(y_true, y_pred)
-    print("recall:", precision)
-    precision = f1_score(y_true, y_pred)
-    print("f1_score:", precision)
+if max_length == len(y_true):
+    y_pred += [0] * (max_length - len(y_pred))
+else:
+    y_true += [0] * (max_length - len(y_true))
 
-if __name__ == "__main__":
-    main()
+print("veri")
+pprint(y_true)
+print("predizione")
+pprint(y_pred)
+
+precision = precision_score(y_true, y_pred)
+print("Precision:", precision)
+precision = recall_score(y_true, y_pred)
+print("recall:", precision)
+precision = f1_score(y_true, y_pred)
+print("f1_score:", precision)
+
