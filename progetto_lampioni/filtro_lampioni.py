@@ -39,8 +39,8 @@ def individua_lampioni_colore(image):
     cv2.imshow('res4', res4)
 
     # solo i bianchi
-    lower_white = np.array([200, 200, 200])  # Valori minimi per bianco puro in HSV
-    upper_white = np.array([255, 255, 255])  # Valori massimi per bianco puro in HSV
+    lower_white = np.array([200, 200, 200])  # Valori minimi per bianco puro in RGB
+    upper_white = np.array([255, 255, 255])  # Valori massimi per bianco puro in RGB
 
     mask = cv2.inRange(res4, lower_white, upper_white)
     #cv2.imshow('mask', mask)
